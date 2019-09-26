@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LeetCode Daily</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入 Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+        $("#form-demo").submit(function(event){
+            const f=$(this)
+            if(f[0].checkValidity()===false){
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            f.addClass("was-validated")
+        })
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- title -->
+        <div class="jumbotron">
+            <h1 class="display-4">LeetCode Daily</h1>
+            <hr class="my-2">
+            <p>Talk is cheap. Show me the code.</p>
+        </div>
+        <!-- <img src="leet.jpg" class="rounded-circle" width="80" height="80"> -->
+
+        <!-- table -->
+        <div class="row mx-auto text-center">
+            <div class="col-sm-6">
+                <div class="container">
+                    <h3><span class="badge badge-secondary">Leaderboard</span></h3>
+                    <table class="table table-hover">
+                        <caption>Data will refresh every 2 mins.</caption>
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th width="20%">Rank</th>
+                                <th>Name</th>
+                                <th>AC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for member in leaderboard_list %}
+                                
+                                {% if forloop.counter == 1 %}
+                                    <tr class="text-danger">
+                                {% elif forloop.counter == 2 %}
+                                    <tr class="text-success">
+                                {% elif forloop.counter == 3 %}
+                                    <tr class="text-primary">
+                                {% else %}
+                                    <tr>
+                                {% endif %}
+
+                                {% for ele in member %}
+                                    <td>{{ele}}</td>
+                                {% endfor %}
+
+                                    </tr>
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3">
+                <div class="container">
+                    <h3><span class="badge badge-secondary">Yesterday</span></h3>
+                    <table class="table table-hover">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Name</th>
+                                <th>AC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% for member in yesterday_list %}
+                                
+                            {% if forloop.counter == 1 %}
+                                <tr class="text-danger">
+                            {% elif forloop.counter == 2 %}
+                                <tr class="text-success">
+                            {% elif forloop.counter == 3 %}
+                                <tr class="text-primary">
+                            {% else %}
+                                <tr>
+                            {% endif %}
+
+                            {% for ele in member %}
+                                <td>{{ele}}</td>
+                            {% endfor %}
+
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="container">
+                    <h3><span class="badge badge-secondary">Today</span></h3>
+                    <table class="table table-hover">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>Name</th>
+                                <th>AC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% for member in today_list %}
+                                
+                            {% if forloop.counter == 1 %}
+                                <tr class="text-danger">
+                            {% elif forloop.counter == 2 %}
+                                <tr class="text-success">
+                            {% elif forloop.counter == 3 %}
+                                <tr class="text-primary">
+                            {% else %}
+                                <tr>
+                            {% endif %}
+
+                            {% for ele in member %}
+                                <td>{{ele}}</td>
+                            {% endfor %}
+
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+
+    <!-- button -->
+    <div class="container">
+        <div class="row">
+            <button type="button" class="btn btn-outline-success m-auto" data-toggle="modal" data-target="#JoinUs">Join
+                us</button>
+        </div>
+
+        <!-- join us form -->
+        <div class="modal fade" id="JoinUs">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Join us!</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <form action="/register" method="post"  id="form-demo">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <p class="text-warning">测试阶段信息一旦提交无法主动修改，请仔细填写</p>
+                            
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Name</label>
+                                    <input class="form-control" type="text" name="nickname" required="required" pattern="[A-Za-z0-9]{3,15}" placeholder="used for display in the rank. 3~15">
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Email</label>
+                                    <input class="form-control" type="email" name="email" required="required" placeholder="used for daily notice">
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Leetcode ID</label>
+                                    <input class="form-control" type="text" name="leetcode_id" required="required" placeholder="shown in the url, e.g. 'leetcode.com/huaji', huaji is id">
+                                </div>
+                                <label class="font-weight-bold">Your Leetcode Version</label>
+                                <br/>
+                                <label class="radio-inline"><input type="radio" required="required" name="leetcode_version" value=0> 
+                                    <strong>EN</strong> (leetcode.com) </label>
+                                <label class="radio-inline"><input type="radio" required="required" name="leetcode_version" value=1>
+                                    <strong>CN</strong> (leetcode-cn.com) </label>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <!-- footer -->
+    <div class="container text-center">
+        <hr class="my-2">
+        <p>Welcome to our leetcode discussion QQ group: <a
+                href="https://shang.qq.com/wpa/qunwpa?idkey=1a705940f91fff749a5048d09a5382b81e1fac23ffe33a4bd223120f4a6e37de"
+                class="text-success">730372043</a></p>
+        <i class="fa fa-copyright" aria-hidden="true">Reeker</i>
+    </div>
+
+</body>
+
+</html>
