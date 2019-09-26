@@ -26,7 +26,7 @@ def update_daily():
 
 
 def tasklist():
-    schedule.every(2).minutes.do(update)
+    schedule.every(10).minutes.do(update)
     schedule.every(1).day.at("23:00").do(update_daily)
     
     while True:
